@@ -13,7 +13,7 @@ class Matrix:
         self._op = _op
 
     def __add__(self, other):
-        other = other if isinstance(other, Matrix) else Matrix(other)
+        other = other if isinstance(other, Matrix) else Matrix(np.array([other]))
         res = Matrix(self.val + other.val, '+', (self, other))
 
         def _backprop():
@@ -39,7 +39,7 @@ class Matrix:
         return self + other
 
     def __mul__(self, other):
-        other = other if isinstance(other, Matrix) else Matrix(other)
+        other = other if isinstance(other, Matrix) else Matrix(np.array([other]))
         res = Matrix(self.val * other.val, '*', (self, other))
 
         def _backprop():
@@ -168,6 +168,7 @@ class Matrix:
         for v in reversed(order):
             # print(v.val, "Operator=", v._op, v._backprop)
             v._backprop()
+            print("Grad:", v.grad.sum()) 
         return order
 
 
